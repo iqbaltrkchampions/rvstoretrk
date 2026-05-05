@@ -2038,6 +2038,11 @@
             <button class="toggle-opt" id="toggle-80" onclick="setThermal('80mm')">80mm</button>
           </div>
         </div>
+        <div class="form-group">
+          <label class="form-label">Catatan Bawah Struk</label>
+          <textarea class="form-control" id="s-receipt-note" rows="2" placeholder="Barang tidak diambil > 30 hari menjadi tanggung jawab pelanggan"></textarea>
+          <div style="font-size:11px;color:var(--white-muted);margin-top:4px">Muncul di bagian bawah struk cetak</div>
+        </div>
         <!-- Database dikonfigurasi langsung di kode sumber -->
         <button class="btn btn-primary" onclick="saveSettings()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
@@ -2123,6 +2128,7 @@ function loadSettings() {
   document.getElementById('s-store-name').value = s.storeName;
   document.getElementById('s-address').value = s.address;
   document.getElementById('s-phone').value = s.phone;
+  document.getElementById('s-receipt-note').value = s.receiptNote || '';
   setThermal(s.thermal, true);
   // Refresh profil info from current session
   sbClient.auth.getSession().then(({ data: { session } }) => {
@@ -2137,7 +2143,8 @@ function loadSettings() {
 
 function getSettings() {
   return Object.assign({
-    storeName: 'RVSTORE', address: '', phone: '', thermal: '58mm'
+    storeName: 'RVSTORE', address: '', phone: '', thermal: '58mm',
+    receiptNote: 'Barang tidak diambil > 30 hari menjadi tanggung jawab pelanggan'
   }, JSON.parse(localStorage.getItem('rvstore_settings') || '{}'));
 }
 
@@ -2146,7 +2153,8 @@ function saveSettings() {
     storeName: document.getElementById('s-store-name').value || 'RVSTORE',
     address: document.getElementById('s-address').value,
     phone: document.getElementById('s-phone').value,
-    thermal: localStorage.getItem('rvstore_thermal') || '58mm'
+    thermal: localStorage.getItem('rvstore_thermal') || '58mm',
+    receiptNote: document.getElementById('s-receipt-note').value.trim()
   };
   localStorage.setItem('rvstore_settings', JSON.stringify(s));
 
@@ -2659,7 +2667,7 @@ function printResi() {
     <div class="sep"></div>
     <div class="center">Terima kasih atas kepercayaan Anda</div>
     <div class="sep"></div>
-    <div style="font-size:9px">Barang tidak diambil > 30 hari menjadi tanggung jawab pelanggan</div>
+    ${s.receiptNote ? `<div style="font-size:9px">${s.receiptNote}</div>` : ""}
   </body></html>`;
 
   const w = window.open('', '_blank', 'width=300,height=600');
