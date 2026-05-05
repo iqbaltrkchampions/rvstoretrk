@@ -1055,7 +1055,7 @@
     }
 
     @media print {
-      @page { size: 58mm auto; margin: 4mm; }
+      @page { margin: 4mm; }
       .print-thermal { font-size: 10px; }
     }
 
@@ -2640,7 +2640,7 @@ function printResi() {
   const html = `<!DOCTYPE html><html><head>
     <meta charset="UTF-8">
     <style>
-      @page { size: ${width} auto; margin: 4mm; }
+      @page { margin: 4mm; }
       body { font-family: 'Courier New', monospace; font-size: 10px; color: #000; margin:0; }
       .center { text-align: center; }
       .bold { font-weight: bold; }
